@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+time0 = 0
+timen = 10
+periods = 1000
+
+mean = 0.75
+dev = 0.2
+theta  = 5
+
+
+y = np.zeros(periods)
+
+t = np.linspace(time0,timen,periods)
+dt = np.diff(t)[0]
+
+drift = lambda y,t: theta * (mean-y)
+white_noise = np.random.normal(loc=0.0,scale=1.0,size=periods) * np.sqrt(dt)
+
+dt2 = np.diff(t)
+
+
+for i in range(1, periods):
+    y[i] = y[i-1] + (drift(y[i-1], i * dt) * dt) + (dev * white_noise[i])
+
+plt.plot(t,y)
+plt.title('mu = ' + str(mean) + '; sigma = ' + str(dev) + '; theta = ' + str(theta))
+plt.show()
